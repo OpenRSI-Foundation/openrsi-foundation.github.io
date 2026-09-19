@@ -1,6 +1,5 @@
 const field = document.querySelector('.iteration-field');
 const label = document.querySelector('.iteration-label');
-const replay = document.querySelector('.replay');
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 let timers = [];
 function play() {
@@ -15,6 +14,5 @@ function play() {
   }, i * 1800));
   timers.push(setTimeout(() => { label.textContent = 'Each iteration builds on the last.'; }, 9000));
 }
-replay.addEventListener('click', play);
 reduced.addEventListener('change', play);
 play();
