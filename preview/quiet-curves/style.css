@@ -92,3 +92,6 @@ h1 em{font-weight:400;letter-spacing:-.055em;color:#4f4f4f}
 @media(prefers-reduced-motion:reduce){.engraved-curves{animation:none!important;opacity:1;clip-path:none}}
 
 .figure-top.quiet-top .math-mark{color:#555}
+
+/* A small upward circular gesture complements the static curves. */
+.upward-orbit{fill:none;stroke:#555;stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round}.orbit-track{stroke:#a7a7a7;stroke-width:.65;opacity:.35}.orbit-arrow{transform-origin:463px 170px;animation:upward-circle 9s linear infinite}@keyframes upward-circle{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.orbit-arrow{animation:none!important}}
