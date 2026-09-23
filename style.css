@@ -59,3 +59,9 @@ h2{font-family:Manrope,sans-serif;font-weight:400;letter-spacing:-.055em;line-he
 
 /* Anonymous advisor placeholders for review. */
 .placeholder-portrait{display:grid;place-items:center;background:#f0f0f0;border:1px solid #e6e6e6}.placeholder-portrait>svg{width:40%;height:40%;color:#b8b8b8;stroke:currentColor;stroke-width:1.2}.placeholder-portrait .placeholder-number{display:block;position:absolute;left:15px;right:auto;top:12px;bottom:auto;padding:0;width:auto;height:auto;background:none;opacity:1;transform:none;font:11px monospace;letter-spacing:1px;color:#999}.advisor-placeholder h3{color:#555}
+
+/* Shared OpenRSI identity: official three-part mark in monochrome. */
+.brand::before{content:"";display:block;width:48px;height:48px;flex:0 0 48px;background:url("brand-mark.svg") center/contain no-repeat}
+.brand>svg{display:none}
+footer .brand::before{width:38px;height:38px;flex-basis:38px}
+@media(max-width:700px){header .brand::before{width:42px;height:42px;flex-basis:42px}}
