@@ -23,9 +23,9 @@ assert_contains index.html '<link rel="canonical" href="https://openrsi.foundati
 assert_contains index.html '<meta property="og:site_name" content="OpenRSI Foundation">'
 assert_contains index.html '<meta property="og:url" content="https://openrsi.foundation/">'
 assert_contains index.html 'OpenRSI Foundation brings researchers and communities together'
-assert_contains index.html 'href="https://index-openrsi-foundation.rsi-anything.workers.dev/"'
-assert_contains index.html 'href="https://index-openrsi-foundation.rsi-anything.workers.dev/contribute.html"'
-assert_not_contains index.html 'https://index.openrsi.foundation'
+assert_contains index.html 'href="https://index.openrsi.foundation/"'
+assert_contains index.html 'href="https://index.openrsi.foundation/contribute.html"'
+assert_not_contains index.html 'https://index-openrsi-foundation.rsi-anything.workers.dev'
 
 node <<'NODE'
 const fs = require('fs');
