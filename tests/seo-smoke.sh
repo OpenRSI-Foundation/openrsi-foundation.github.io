@@ -10,10 +10,22 @@ assert_contains() {
   fi
 }
 
+assert_not_contains() {
+  file=$1
+  unexpected=$2
+  if grep -Fq "$unexpected" "$file"; then
+    echo "Unexpected in $file: $unexpected" >&2
+    exit 1
+  fi
+}
+
 assert_contains index.html '<link rel="canonical" href="https://openrsi.foundation/">'
 assert_contains index.html '<meta property="og:site_name" content="OpenRSI Foundation">'
 assert_contains index.html '<meta property="og:url" content="https://openrsi.foundation/">'
 assert_contains index.html 'OpenRSI Foundation brings researchers and communities together'
+assert_contains index.html 'href="https://index-openrsi-foundation.rsi-anything.workers.dev/"'
+assert_contains index.html 'href="https://index-openrsi-foundation.rsi-anything.workers.dev/contribute.html"'
+assert_not_contains index.html 'https://index.openrsi.foundation'
 
 node <<'NODE'
 const fs = require('fs');
