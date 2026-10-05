@@ -65,3 +65,29 @@ h2{font-family:Manrope,sans-serif;font-weight:400;letter-spacing:-.055em;line-he
 .brand>svg{display:none}
 footer .brand::before{width:38px;height:38px;flex-basis:38px}
 @media(max-width:700px){header .brand::before{width:42px;height:42px;flex-basis:42px}}
+
+/* Design ideas, batch 1: centred hero with the ASCII rotor, project list, readability fixes. */
+.hero-centered{grid-template-columns:1fr;justify-items:center;text-align:center;padding-top:48px}
+.hero-rotor{width:100%;display:flex;justify-content:center;margin-bottom:20px;overflow:hidden}
+.rotor{margin:0;font:400 clamp(5.5px,.7vw,9px)/1 ui-monospace,"SF Mono",Menlo,monospace;color:#8a8a8a;white-space:pre;user-select:all}
+.hero-centered .hero-copy{display:flex;flex-direction:column;align-items:center}
+.hero-centered .intro{margin-left:auto;margin-right:auto}
+.hero-centered .hero-foot{text-align:left}
+h1,h1 em{letter-spacing:-.035em}
+h2,.section-heading h2,.mission h2{letter-spacing:-.035em}
+.closing h2{letter-spacing:-.025em}
+.intro,.mission p:last-child,.research-inner>div>p:last-child,.project p{font-size:16px}
+.brand-sub{font-size:11px;letter-spacing:3px}
+footer .brand-sub{font-size:11px;letter-spacing:2.5px}
+.project-top{font-size:11px}
+.research-inner{grid-template-columns:1fr;gap:40px}
+.research-inner>div:first-child{max-width:720px}
+.projects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.project{display:flex;flex-direction:column}
+.project-cover{display:block;width:100%;height:150px;margin:26px 0 30px;border-radius:6px;background:#0b0b0b}
+.project-bottom{margin-top:auto}
+.project-next{background:transparent;border:1px dashed #4a4a4a;color:#9a9a9a}
+.project-next:hover{transform:none;background:transparent;border-color:#4a4a4a}
+.project-next h3{color:#bdbdbd}
+.advisors-section .source-link{margin-top:0}
+@media(max-width:700px){.hero-centered{padding-top:28px}.projects{grid-template-columns:1fr}.project-cover{height:130px}.intro,.mission p:last-child,.project p{font-size:15px}}
