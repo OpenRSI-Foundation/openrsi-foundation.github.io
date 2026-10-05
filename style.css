@@ -91,3 +91,16 @@ footer .brand-sub{font-size:11px;letter-spacing:2.5px}
 .project-next h3{color:#bdbdbd}
 .advisors-section .source-link{margin-top:0}
 @media(max-width:700px){.hero-centered{padding-top:28px}.projects{grid-template-columns:1fr}.project-cover{height:130px}.intro,.mission p:last-child,.project p{font-size:15px}}
+
+/* Design ideas, batch 1b: standalone statement and news list. */
+.mission{padding-bottom:40px}
+.statement{padding:90px 0 130px}
+.statement p{margin:0;max-width:22ch;font-size:clamp(32px,4.2vw,58px);line-height:1.18;letter-spacing:-.03em;font-weight:400}
+.news-section{padding-top:20px;padding-bottom:90px}
+.news{list-style:none;margin:0;padding:0;border-top:1px solid #171717}
+.news a{display:grid;grid-template-columns:220px minmax(0,1fr) 18px;gap:24px;align-items:baseline;padding:22px 0;border-bottom:1px solid #e2e2e2}
+.news-kind{font-family:monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#737373}
+.news-title{font-size:20px;letter-spacing:-.02em}
+.news a:hover .news-title{text-decoration:underline;text-underline-offset:5px}
+.news a:hover .arrow-icon{transform:translate(2px,-2px)}
+@media(max-width:700px){.statement{padding:50px 0 80px}.news a{grid-template-columns:minmax(0,1fr) 18px;gap:6px 12px}.news-kind{grid-column:1/-1}.news-title{font-size:17px}}
