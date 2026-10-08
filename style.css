@@ -145,3 +145,19 @@ footer{border-color:var(--line)}
 .projects .project>.project-cover{grid-column:2;grid-row:2/5;height:100%;min-height:240px;margin:24px 0 0}
 .projects .project>.project-bottom{grid-column:1;grid-row:4;align-self:end}
 @media(max-width:700px){.projects .project{display:flex}.projects .project>.project-cover{height:150px;min-height:0;margin:22px 0 26px}}
+
+/* Design ideas, batch 1d: an immersive opening and a bold statement page. */
+/* the hero fills the first screen: rotor, name, one line of mission */
+.hero-centered{min-height:calc(100vh - 100px);min-height:calc(100svh - 100px);align-content:center;padding-top:24px;padding-bottom:0}
+.hero-centered .hero-rotor{margin-bottom:28px}
+.rotor{font-size:clamp(6.5px,.86vw,11.5px);color:#7e7b72}
+.hero-name{font-size:clamp(52px,7.4vw,112px);letter-spacing:-.04em;margin:0 0 18px}
+.hero-mission{font-size:clamp(17px,1.4vw,20px)}
+.hero-centered .hero-foot{align-self:end;margin-top:clamp(40px,7vh,80px)}
+.resolve-canvas{image-rendering:pixelated}
+/* the statement: a full screen of ink, type one step bolder */
+.statement{background:var(--ink);color:#ecebe6;min-height:100vh;min-height:100svh;display:grid;align-items:center;padding:clamp(80px,12vh,140px) 0}
+.statement p{max-width:20ch;font-size:clamp(40px,5.2vw,82px);line-height:1.08;letter-spacing:-.035em;font-weight:500;color:#ecebe6}
+.statement .resolve{white-space:nowrap;color:#ffffff}
+.statement + .mission{border-top:0}
+@media(max-width:700px){.hero-centered{min-height:auto;padding-top:20px}.statement{min-height:auto;padding:90px 0}.statement p{font-size:clamp(34px,9vw,46px)}.statement .resolve{white-space:normal}}

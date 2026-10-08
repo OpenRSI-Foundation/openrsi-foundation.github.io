@@ -17,7 +17,7 @@
   /* ---------- ASCII rotor ---------- */
   var pre = document.querySelector('.rotor');
   if (pre) {
-    var COLS = 56, ROWS = 32, CW = 3, CH = 5, RAMP = ' .:-=+*#%@';
+    var COLS = 64, ROWS = 36, CW = 3, CH = 5, RAMP = ' .:-=+*#%@';
     var off = document.createElement('canvas');
     off.width = COLS * CW; off.height = ROWS * CH;
     var oc = off.getContext('2d', { willReadFrequently: true });
@@ -79,4 +79,73 @@
     paint();
     var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(paint, 120); });
   }
+})();
+
+/* Pixel resolve: text arrives as coarse pixels and sharpens in a few steps,
+   the way the logo's idea of discrete rules becoming continuous motion reads
+   in type. Runs once per element: the hero name on load, the statement's key
+   phrase when it scrolls into view. The real text stays in the DOM (it is
+   only made transparent while a canvas draws the steps over it). */
+(function () {
+  'use strict';
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var STEPS = [18, 11, 6, 3, 0];
+  var STEP_MS = 120;
+
+  function resolve(el) {
+    var rects = el.getClientRects();
+    if (rects.length !== 1) return;                      /* only single-line text */
+    var r = rects[0], cs = getComputedStyle(el);
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var W = Math.ceil(r.width) + 8, H = Math.ceil(r.height) + 8;
+    var cv = document.createElement('canvas');
+    cv.setAttribute('aria-hidden', 'true');
+    cv.className = 'resolve-canvas';
+    cv.width = W * dpr; cv.height = H * dpr;
+    cv.style.cssText = 'position:absolute;left:' + (r.left + window.scrollX - 4) + 'px;top:' + (r.top + window.scrollY - 4) + 'px;width:' + W + 'px;height:' + H + 'px;pointer-events:none;z-index:5;';
+    document.body.appendChild(cv);
+    var c = cv.getContext('2d');
+    var font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+    var color = cs.color;
+    var base = 4 + (r.height + parseFloat(cs.fontSize) * 0.72) / 2;   /* optical baseline in the box */
+    var small = document.createElement('canvas'), sc = small.getContext('2d');
+    var rgb = color.match(/\d+(\.\d+)?/g).map(Number);
+    el.style.color = 'transparent';
+    var i = 0;
+    function draw() {
+      var b = STEPS[i];
+      c.setTransform(1, 0, 0, 1, 0, 0);
+      c.clearRect(0, 0, cv.width, cv.height);
+      if (!b) { cv.remove(); el.style.color = ''; return; }
+      var sw = Math.max(1, Math.ceil(W / b)), sh = Math.max(1, Math.ceil(H / b));
+      small.width = sw; small.height = sh;
+      sc.setTransform(1 / b, 0, 0, 1 / b, 0, 0);
+      sc.font = font; sc.textBaseline = 'alphabetic';
+      sc.letterSpacing = cs.letterSpacing;
+      sc.fillStyle = '#000';
+      sc.fillText(el.textContent, 4, base);
+      var img = sc.getImageData(0, 0, sw, sh), d = img.data;
+      for (var k = 0; k < d.length; k += 4) { var on = d[k + 3] > 90; d[k] = rgb[0]; d[k + 1] = rgb[1]; d[k + 2] = rgb[2]; d[k + 3] = on ? 255 : 0; }
+      sc.putImageData(img, 0, 0);
+      c.imageSmoothingEnabled = false;
+      c.drawImage(small, 0, 0, sw * b * dpr, sh * b * dpr);
+      i++;
+      setTimeout(draw, STEP_MS);
+    }
+    draw();
+  }
+
+  function whenFonts(fn) { (document.fonts && document.fonts.ready) ? document.fonts.ready.then(fn) : fn(); }
+
+  whenFonts(function () {
+    var name = document.querySelector('.hero-name');
+    if (name) resolve(name);
+    var phrase = document.querySelector('.statement .resolve');
+    if (phrase && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        if (es[0].isIntersecting) { io.disconnect(); resolve(phrase); }
+      }, { threshold: 1 });
+      io.observe(phrase);
+    }
+  });
 })();
