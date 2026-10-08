@@ -174,3 +174,5 @@ footer{border-color:var(--line)}
 .statement ::selection{background:rgba(111,139,255,.35);color:#fff}
 a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
 .nav-cta:hover,.source-link:hover,.news a:hover .news-title{color:var(--blue)}
+/* the hero's promise carries the same blue as the statement and the mission */
+.hero-mission .everyone{color:var(--blue)}
