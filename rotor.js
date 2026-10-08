@@ -74,7 +74,7 @@
           c.beginPath(); c.arc(x, y, dot, 0, Math.PI * 2); c.fill();
         }
       }
-      drawMark(c, cx, cy, 30, 0, '#f0f0f0');
+      drawMark(c, cx, cy, 30, 0, '#6f8bff');
     };
     paint();
     var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(paint, 120); });
