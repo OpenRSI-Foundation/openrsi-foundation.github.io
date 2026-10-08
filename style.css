@@ -176,3 +176,14 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offse
 .nav-cta:hover,.source-link:hover,.news a:hover .news-title{color:var(--blue)}
 /* the hero's promise carries the same blue as the statement and the mission */
 .hero-mission .everyone{color:var(--blue)}
+
+/* Design audit pass: one type family, slimmer placeholders, themed browser surfaces. */
+/* Manrope everywhere; emphasis comes from colour and weight, not a system serif */
+h1 em,.mission h2 em,.closing h2{font-family:inherit;font-style:normal}
+.mission h2 em{font-weight:600}
+.closing h2{font-weight:500;letter-spacing:-.035em}
+/* the advisors placeholder is a single quiet row until there are names to show */
+.advisors-section{padding:56px 0 64px}
+.advisors-section .section-heading{margin-bottom:18px;align-items:baseline}
+.advisors-section .section-heading h2{font-size:clamp(28px,2.6vw,38px)}
+html{scrollbar-color:rgba(13,13,11,.35) var(--paper)}
