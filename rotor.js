@@ -55,7 +55,7 @@
   var cover = document.querySelector('.project-cover');
   if (cover) {
     var seed = 7, rnd = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
-    var stars = [];
+    var stars = [], blue = null;
     for (var i = 0; i < 260; i++) stars.push({ rad: Math.pow(rnd(), 0.6), phi: rnd() * Math.PI * 2, b: 0.2 + Math.pow(rnd(), 3) * 0.8 });
     var paint = function () {
       var box = cover.getBoundingClientRect();
@@ -65,16 +65,32 @@
       var c = cover.getContext('2d');
       c.setTransform(dpr, 0, 0, dpr, 0, 0);
       var cx = W / 2, cy = H * 0.5, Rmax = Math.hypot(W, H) * 0.8;
+      /* a few trails in the shared blue for a little pop: three whole,
+         reasonably bright trails at spread-out radii, chosen once */
+      if (!blue) {
+        var cand = [];
+        for (var j = 0; j < stars.length; j++) {
+          var sj = stars[j], rj = 12 + sj.rad * Rmax, inside = true;
+          for (var q = 0; q < 12 && inside; q++) {
+            var aj = sj.phi - q * 9 / Math.max(30, rj), xj = cx + rj * Math.cos(aj), yj = cy + rj * Math.sin(aj);
+            if (xj < 6 || xj > W - 6 || yj < 6 || yj > H - 6) inside = false;
+          }
+          if (inside && rj > 30) cand.push(j);
+        }
+        cand.sort(function (m, n) { return stars[m].rad - stars[n].rad; });
+        blue = {};
+        [0.35, 0.7, 0.95].forEach(function (f) { if (cand.length) blue[cand[Math.floor(f * (cand.length - 1))]] = 1; });
+      }
       for (var s = 0; s < stars.length; s++) {
-        var st = stars[s], rr = 12 + st.rad * Rmax, dot = 0.45 + st.b * 0.9;
+        var st = stars[s], rr = 12 + st.rad * Rmax, dot = blue[s] ? 1.7 : 0.45 + st.b * 0.9;
         for (var k = 0; k < 12; k++) {
           var a = st.phi - k * 9 / Math.max(30, rr), x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
           if (x < -2 || x > W + 2 || y < -2 || y > H + 2) continue;
-          c.fillStyle = 'rgba(240,240,240,' + (st.b * 0.7 * (1 - k / 14)).toFixed(3) + ')';
+          c.fillStyle = blue[s] ? 'rgba(111,139,255,' + (1 - k / 24).toFixed(3) + ')'
+                                : 'rgba(240,240,240,' + (st.b * 0.7 * (1 - k / 14)).toFixed(3) + ')';
           c.beginPath(); c.arc(x, y, dot, 0, Math.PI * 2); c.fill();
         }
       }
-      c.fillStyle = '#ecebe6'; c.beginPath(); c.arc(cx, cy, 1.6, 0, Math.PI * 2); c.fill();   /* the pole: a single star, no mark */
     };
     paint();
     var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(paint, 120); });
