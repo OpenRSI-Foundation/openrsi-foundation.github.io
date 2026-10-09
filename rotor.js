@@ -74,7 +74,7 @@
           c.beginPath(); c.arc(x, y, dot, 0, Math.PI * 2); c.fill();
         }
       }
-      drawMark(c, cx, cy, 30, 0, '#6f8bff');
+      c.fillStyle = '#ecebe6'; c.beginPath(); c.arc(cx, cy, 1.6, 0, Math.PI * 2); c.fill();   /* the pole: a single star, no mark */
     };
     paint();
     var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(paint, 120); });
@@ -89,8 +89,8 @@
 (function () {
   'use strict';
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var STEPS = [18, 11, 6, 3, 0];
-  var STEP_MS = 120;
+  var STEPS = [22, 16, 11, 7, 4, 2, 0];
+  var STEP_MS = 190;
 
   function resolve(el) {
     var rects = el.getClientRects();

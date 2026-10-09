@@ -187,3 +187,15 @@ h1 em,.mission h2 em,.closing h2{font-family:inherit;font-style:normal}
 .advisors-section .section-heading{margin-bottom:18px;align-items:baseline}
 .advisors-section .section-heading h2{font-size:clamp(28px,2.6vw,38px)}
 html{scrollbar-color:rgba(13,13,11,.35) var(--paper)}
+
+/* Team feedback 2026-10-08: a firmer type family shared with the Index, the hero lifted on short screens. */
+/* Geist (sans) for everything, Geist Mono for labels: the Foundation's sibling of the Index's Geist Mono */
+body,.button,.nav-cta,.project-bottom,.source-link,h1,h2,h3,.hero-name,.statement p{font-family:Geist,"Helvetica Neue",Arial,sans-serif}
+.eyebrow,.hero-foot,.project-top,.news-kind,.figure-top,.figure-bottom{font-family:"Geist Mono",ui-monospace,Menlo,monospace}
+.hero-name{font-weight:500;letter-spacing:-.05em}
+.statement p{font-weight:500;letter-spacing:-.04em}
+h2,.section-heading h2,.mission h2{font-weight:500;letter-spacing:-.04em}
+/* the rotor scales with the screen's height too, so the name never drops below the fold */
+.rotor{font-size:clamp(5.5px,min(.86vw,1.12vh),11.5px)}
+.hero-centered .hero-rotor{margin-bottom:clamp(8px,2.4vh,28px)}
+.hero-centered{min-height:calc(100svh - 100px);padding-top:clamp(8px,2vh,24px)}
