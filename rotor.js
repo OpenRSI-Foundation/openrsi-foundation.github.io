@@ -54,9 +54,16 @@
   /* ---------- dotted star-trail cover for the Index card ---------- */
   var cover = document.querySelector('.project-cover');
   if (cover) {
-    var seed = 7, rnd = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
-    var stars = [], blue = null;
-    for (var i = 0; i < 260; i++) stars.push({ rad: Math.pow(rnd(), 0.6), phi: rnd() * Math.PI * 2, b: 0.2 + Math.pow(rnd(), 3) * 0.8 });
+    var seed = 11, rnd = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+    /* a balanced field: angles follow the golden angle (with a little jitter)
+       so the trails spread evenly round the pole instead of clumping, and
+       each trail's length follows its brightness, like a real exposure */
+    var stars = [], GOLD = Math.PI * (3 - Math.sqrt(5));
+    for (var i = 0; i < 240; i++) {
+      var b = 0.2 + Math.pow(rnd(), 3) * 0.8;
+      stars.push({ rad: Math.pow((i + rnd()) / 240, 0.62), phi: i * GOLD + (rnd() - 0.5) * 0.6, b: b, n: 8 + Math.round(b * 8) });
+    }
+    var blue = null;
     var paint = function () {
       var box = cover.getBoundingClientRect();
       if (!box.width || !box.height) return;
@@ -65,29 +72,34 @@
       var c = cover.getContext('2d');
       c.setTransform(dpr, 0, 0, dpr, 0, 0);
       var cx = W / 2, cy = H * 0.5, Rmax = Math.hypot(W, H) * 0.8;
-      /* a few trails in the shared blue for a little pop: three whole,
-         reasonably bright trails at spread-out radii, chosen once */
+      var pt = function (st, k, rr) { var a = st.phi - k * 9 / Math.max(30, rr); return [cx + rr * Math.cos(a), cy + rr * Math.sin(a)]; };
+      /* two trails in the shared blue, one on each side and deliberately
+         unlike each other: the left one nearer the pole, longer and bright;
+         the right one further out, shorter and softer */
       if (!blue) {
-        var cand = [];
+        var left = [], right = [];
         for (var j = 0; j < stars.length; j++) {
-          var sj = stars[j], rj = 12 + sj.rad * Rmax, inside = true;
-          for (var q = 0; q < 12 && inside; q++) {
-            var aj = sj.phi - q * 9 / Math.max(30, rj), xj = cx + rj * Math.cos(aj), yj = cy + rj * Math.sin(aj);
-            if (xj < 6 || xj > W - 6 || yj < 6 || yj > H - 6) inside = false;
-          }
-          if (inside && rj > 30) cand.push(j);
+          var sj = stars[j], rj = 12 + sj.rad * Rmax, ok = rj > 40;
+          for (var q = 0; q < 16 && ok; q++) { var p = pt(sj, q, rj); if (p[0] < 10 || p[0] > W - 10 || p[1] < 10 || p[1] > H - 10) ok = false; }
+          if (!ok) continue;
+          var mp = pt(sj, 8, rj);   /* upper-left and lower-right, so the two balance across the pole */
+          if (mp[0] < cx - W * 0.12 && mp[1] < cy) left.push(j); else if (mp[0] > cx + W * 0.12 && mp[1] > cy) right.push(j);
         }
-        cand.sort(function (m, n) { return stars[m].rad - stars[n].rad; });
+        var byRad = function (m, n) { return stars[m].rad - stars[n].rad; };
+        left.sort(byRad); right.sort(byRad);
         blue = {};
-        [0.35, 0.7, 0.95].forEach(function (f) { if (cand.length) blue[cand[Math.floor(f * (cand.length - 1))]] = 1; });
+        if (left.length) blue[left[Math.floor(left.length * 0.35)]] = { n: 16, dot: 1.8, al: 1 };
+        if (right.length) blue[right[Math.floor((right.length - 1) * 0.65)]] = { n: 11, dot: 1.45, al: 0.85 };
       }
       for (var s = 0; s < stars.length; s++) {
-        var st = stars[s], rr = 12 + st.rad * Rmax, dot = blue[s] ? 1.7 : 0.45 + st.b * 0.9;
-        for (var k = 0; k < 12; k++) {
-          var a = st.phi - k * 9 / Math.max(30, rr), x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
+        var st = stars[s], bl = blue[s], rr = 12 + st.rad * Rmax;
+        var n = bl ? bl.n : st.n, dot = bl ? bl.dot : 0.45 + st.b * 0.9;
+        for (var k = 0; k < n; k++) {
+          var p2 = pt(st, k, rr), x = p2[0], y = p2[1];
           if (x < -2 || x > W + 2 || y < -2 || y > H + 2) continue;
-          c.fillStyle = blue[s] ? 'rgba(111,139,255,' + (1 - k / 24).toFixed(3) + ')'
-                                : 'rgba(240,240,240,' + (st.b * 0.7 * (1 - k / 14)).toFixed(3) + ')';
+          var fade = 1 - k / (n + 2);
+          c.fillStyle = bl ? 'rgba(111,139,255,' + (bl.al * fade).toFixed(3) + ')'
+                           : 'rgba(240,240,240,' + (st.b * 0.7 * fade).toFixed(3) + ')';
           c.beginPath(); c.arc(x, y, dot, 0, Math.PI * 2); c.fill();
         }
       }
