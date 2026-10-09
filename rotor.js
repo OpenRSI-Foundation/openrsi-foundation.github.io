@@ -89,8 +89,8 @@
 (function () {
   'use strict';
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var STEPS = [22, 16, 11, 7, 4, 2, 0];
-  var STEP_MS = 190;
+  var STEPS = [20, 13, 8, 4, 2, 0];
+  var STEP_MS = 150;
 
   function resolve(el) {
     var rects = el.getClientRects();
