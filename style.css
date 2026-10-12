@@ -199,3 +199,11 @@ h2,.section-heading h2,.mission h2{font-weight:500;letter-spacing:-.04em}
 .rotor{font-size:clamp(5.5px,min(.86vw,1.12vh),11.5px)}
 .hero-centered .hero-rotor{margin-bottom:clamp(8px,2.4vh,28px)}
 .hero-centered{min-height:calc(100svh - 100px);padding-top:clamp(8px,2vh,24px)}
+
+/* Type: one shared base sans for both OpenRSI sites (Clarity City, OFL).
+   The Foundation speaks only in it; Geist Mono stays for the small labels. */
+:root{--font-base:"Clarity City","Helvetica Neue",Arial,sans-serif}
+body,.button,.nav-cta,.project-bottom,.source-link,h1,h2,h3,.hero-name,.hero-mission,.statement p,.mission h2 em,.closing h2,.project h3,.news-title,nav a{font-family:var(--font-base)!important}
+.hero-name{font-weight:500;letter-spacing:-.035em;font-size:clamp(48px,6.6vw,96px)}
+h2,.section-heading h2,.mission h2,.closing h2{letter-spacing:-.03em}
+.statement p{letter-spacing:-.03em}
